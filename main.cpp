@@ -2,6 +2,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <math.h>
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -11,6 +12,17 @@ enum ShaderNames
     NONE = -1,
     VERTEX = 0,
     FRAGMENT = 1
+};
+
+struct Vector2
+{
+    float x;
+    float y;
+    Vector2(float posX=0,float posY=0)
+    {
+        x=posX;
+        y=posY;
+    }
 };
 
 struct Color
@@ -64,16 +76,15 @@ struct Color
     }
 };
 
+//struct Vertex
+//{
+//    float x;
+//    float y;
+//};
+
 struct Vertex
 {
-    float x;
-    float y;
-};
-
-struct TestVertex
-{
-    float x;
-    float y;
+    Vector2 pos;
     Color color;
 };
 
@@ -165,33 +176,36 @@ int main(int argc, char** argv)
     glfwMakeContextCurrent(window);
     glewInit();
 
-    Vertex vertices[] = {{-0.5f,-0.5f},{0.0f, 0.5f},{0.5f,-0.5f}};
-    TestVertex testVertices[] = {{-0.5f,-0.5f,Color{255}},{0.0f, 0.5f,Color{0,255}},{0.5f,-0.5f,Color{0,0,255}}};
-    std::cout << "Adres: " << &(testVertices[0].x) <<" Wartosc: " << testVertices[0].x << " " <<"Adres: " << ((float*)testVertices)<<" Wartosc: "<< *((float*)testVertices)<<std::endl;
-    std::cout << "Adres: " << &(testVertices[0].y) <<" Wartosc: " << testVertices[0].y << " " <<"Adres: " << ((float*)testVertices+1)<<" Wartosc: "<< *((float*)testVertices+1)<<std::endl;
+    Vertex vertices[] = {{{-0.5f,-0.5f},{255}},{{0.0f, 0.5f},{0,255}},{{0.5f,-0.5f},{0,0,255}}};
+    Vertex testVertices[] = {{{-0.5f,-0.5f},{255}},{{0.0f, 0.5f},{0,255}},{{0.5f,-0.5f},{0,0,255}}};
+    std::cout << "Adres: " << &(testVertices[0].pos.x) <<" Wartosc: " << testVertices[0].pos.x << " " <<"Adres: " << ((float*)testVertices)<<" Wartosc: "<< *((float*)testVertices)<<std::endl;
+    std::cout << "Adres: " << &(testVertices[0].pos.y) <<" Wartosc: " << testVertices[0].pos.y << " " <<"Adres: " << ((float*)testVertices+1)<<" Wartosc: "<< *((float*)testVertices+1)<<std::endl;
     std::cout << "Adres: " << &(testVertices[0].color.r) <<" Wartosc: " << testVertices[0].color.r << " " <<"Adres: " << ((float*)testVertices+2)<<" Wartosc: "<< *((float*)testVertices+2)<<std::endl;
-    std::cout << "Adres: " << &(testVertices[1].x) <<" Wartosc: " << testVertices[1].x << " " <<"Adres: " << ((float*)testVertices+6)<<" Wartosc: "<< *((float*)testVertices+6)<<std::endl;
-    std::cout << "Adres: " << &(testVertices[1].y) <<" Wartosc: " << testVertices[1].y << " " <<"Adres: " << ((float*)testVertices+7)<<" Wartosc: "<< *((float*)testVertices+7)<<std::endl;
+    std::cout << "Adres: " << &(testVertices[1].pos.x) <<" Wartosc: " << testVertices[1].pos.x << " " <<"Adres: " << ((float*)testVertices+6)<<" Wartosc: "<< *((float*)testVertices+6)<<std::endl;
+    std::cout << "Adres: " << &(testVertices[1].pos.y) <<" Wartosc: " << testVertices[1].pos.y << " " <<"Adres: " << ((float*)testVertices+7)<<" Wartosc: "<< *((float*)testVertices+7)<<std::endl;
     std::cout << "Adres: " << &(testVertices[1].color.r) <<" Wartosc: " << testVertices[1].color.r << " " <<"Adres: " << ((float*)testVertices+8)<<" Wartosc: "<< *((float*)testVertices+8)<<std::endl;
     float verticesPositions[6] = {
         -0.5f,-0.5f,
          0.0f, 0.5f,
          0.5f,-0.5f
     };
-
+    
     unsigned int buffer;
     glGenBuffers(1,&buffer);
     glBindBuffer(GL_ARRAY_BUFFER,buffer);
-    glBufferData(GL_ARRAY_BUFFER,6*sizeof(float),vertices,GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,6*3*sizeof(float),vertices,GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(const void*)0);
+    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,6*sizeof(float),(const void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1,4,GL_FLOAT,GL_FALSE,6*sizeof(float),(const void*)(2*sizeof(float)));
+    
     ShaderSources shadersources = loadShaders("./res/shaders");
     
     unsigned int shader = createShader(shadersources.vertexShader,shadersources.fragmentShader);
     glUseProgram(shader);
-    int uniColor = glGetUniformLocation(shader,"triangleColor");
-    glUniform4f(uniColor,triangleColor.r,triangleColor.g,triangleColor.b,triangleColor.a);
+    //int uniColor = glGetUniformLocation(shader,"triangleColor");
+    //glUniform4f(uniColor,triangleColor.r,triangleColor.g,triangleColor.b,triangleColor.a);
     //std::cout << triangleColor.a << std::endl;
     
     while(!glfwWindowShouldClose(window))
