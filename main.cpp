@@ -70,6 +70,14 @@ struct Vertex
     float y;
 };
 
+struct TestVertex
+{
+    float x;
+    float y;
+    Color color;
+};
+
+
 struct ShaderSources
 {
     std::string vertexShader;
@@ -158,7 +166,13 @@ int main(int argc, char** argv)
     glewInit();
 
     Vertex vertices[] = {{-0.5f,-0.5f},{0.0f, 0.5f},{0.5f,-0.5f}};
-
+    TestVertex testVertices[] = {{-0.5f,-0.5f,Color{255}},{0.0f, 0.5f,Color{0,255}},{0.5f,-0.5f,Color{0,0,255}}};
+    std::cout << "Adres: " << &(testVertices[0].x) <<" Wartosc: " << testVertices[0].x << " " <<"Adres: " << ((float*)testVertices)<<" Wartosc: "<< *((float*)testVertices)<<std::endl;
+    std::cout << "Adres: " << &(testVertices[0].y) <<" Wartosc: " << testVertices[0].y << " " <<"Adres: " << ((float*)testVertices+1)<<" Wartosc: "<< *((float*)testVertices+1)<<std::endl;
+    std::cout << "Adres: " << &(testVertices[0].color.r) <<" Wartosc: " << testVertices[0].color.r << " " <<"Adres: " << ((float*)testVertices+2)<<" Wartosc: "<< *((float*)testVertices+2)<<std::endl;
+    std::cout << "Adres: " << &(testVertices[1].x) <<" Wartosc: " << testVertices[1].x << " " <<"Adres: " << ((float*)testVertices+6)<<" Wartosc: "<< *((float*)testVertices+6)<<std::endl;
+    std::cout << "Adres: " << &(testVertices[1].y) <<" Wartosc: " << testVertices[1].y << " " <<"Adres: " << ((float*)testVertices+7)<<" Wartosc: "<< *((float*)testVertices+7)<<std::endl;
+    std::cout << "Adres: " << &(testVertices[1].color.r) <<" Wartosc: " << testVertices[1].color.r << " " <<"Adres: " << ((float*)testVertices+8)<<" Wartosc: "<< *((float*)testVertices+8)<<std::endl;
     float verticesPositions[6] = {
         -0.5f,-0.5f,
          0.0f, 0.5f,
