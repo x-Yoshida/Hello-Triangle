@@ -1,0 +1,42 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe kompiluj aktywny plik",
+			"command": "C:\\bin\\mingw64\\bin\\g++.exe",
+			"args": [
+				"-g",
+				"main.cpp",
+				"-o",
+				"main.exe",
+				"-I",
+				"${workspaceFolder}/external/GLFW/include",
+				"-I",
+				"${workspaceFolder}/external/GLEW/include",
+				"-L",
+				"${workspaceFolder}/external/GLFW/lib",
+				"-L",
+				"${workspaceFolder}/external/GLEW/lib/Release/x64",
+				"-lmingw32",
+				"-lglfw3",
+				"-lglew32s",
+				"-lgdi32",
+				"-lopengl32",
+				"-static-libgcc",
+				"-static-libstdc++"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"//"${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "kompilator: C:\\bin\\mingw64\\bin\\g++.exe"
+		}
+	]
+}
